@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HEALTH CAMPS AROUND || Guwahati City</title>
+
+    <!-- Bootstrap core CSS 
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+
+    <!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <!--leaflet css
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.7/leaflet-routing-machine.css"/>-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.62.0/dist/L.Control.Locate.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
+
+   <!--jQuery-->
+   <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+      
+   <!-- Make sure you put this AFTER Leaflet's CSS 
+   <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.7/leaflet-routing-machine.js"></script>-->
+   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+   <script defer src="https://cdn.rawgit.com/chrisveness/geodesy/v1.1.2/latlon-spherical.js"></script>
+   <script defer src="https://cdn.rawgit.com/chrisveness/geodesy/v1.1.2/dms.js"></script>
+
+</head>
+
+<body onload="locate();">
+
+    <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#" class="navbar-brand" style="color: #ffffff;">
+                        <strong>HEALTH CAMPS AROUND</strong>
+                    </a>
+                </li>
+                &nbsp;
+                <li>
+                    <a href="#" data-toggle="collapse" data-target="#demo1" style="color: #f6f6f6; font-size: 18px;"><strong>About</strong></a>
+                </li>
+                <div id="demo1" class="collapse col-md-12 col-sm-12 show" style="text-align: center;">
+                    <span style="color: #dedede;">medTracker will help user search all nearby hospitals from their current location. Three nearest hospitals will be shortlisted and displayed for user convenience.</span>
+                </div>
+                &nbsp;
+                <li>
+                    <a href="#" data-toggle="collapse" data-target="#demo2" style="color: #f6f6f6; font-size: 18px;"><strong>Changelog</strong></a>
+                </li>
+                <div id="demo2" class="collapse col-md-12 col-sm-12 show" style="text-align: center;">
+                    <span style="color: #dedede;">1. Nearest 3 hospitals tracked down.<br />2. Route mapping under development.</span>
+                </div>
+                &nbsp;
+                <li>
+                    <a href="#" data-toggle="collapse" data-target="#demo3" style="color: #f6f6f6; font-size: 18px;"><strong>Contact</strong></a>
+                </li>
+                <div id="demo3" class="collapse col-md-12 col-sm-12 show" style="text-align: center;">
+                    <span style="color: #dedede;">
+                        <p><strong>Assam Science &amp; Technology and Environment Council</strong><br /> Bigyan Bhawan,G.S. Road,<br /> Bhangagarh, Guwahati-781005
+                    </span>
+                </div>
+            </ul>
+
+
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+            
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-4">
+                        <h3><a href="#menu-toggle" class="btn btn-secondary" id="a1">&#9776;</a><a href="#menu-toggle" class="btn btn-secondary" id="a2">&#10006;</a>&nbsp;<span style="font-family: 'Indie Flower', cursive;">medTracker</span></h3>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                        <img src="res/logonew.png" class="img-rounded img-responsive" style='float: right; height: 45px;'>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row"> 
+                    <div class="col-md-12">
+                        <div id="map" style="height: 500px;"></div>  
+                    </div>
+                </div>
+                
+                <hr>
+                <div class="row"><div class="col-md-12"><h3 style="font-family: 'Bungee', cursive;">Hospitals&nbsp; Nearby</h3></div>
+                </div>
+                
+                <div class="row">
+                <div class="col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" id="panel1">
+                            Health Center 1
+                        </div>
+                        <div class="panel-body" id="body1">
+                            <p id="address"></p>
+                            <p id="location"></p>
+                            <p id="distance"></p>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" id="panel2">
+                            Health Center 2
+                        </div>
+                        <div class="panel-body" id="body2">
+                            <p id="address"></p>
+                            <p id="location"></p>
+                            <p id="distance"></p>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" id="panel3">
+                            Health Center 3
+                        </div>
+                        <div class="panel-body" id="body3">
+                            <p id="address"></p>
+                            <p id="location"></p>
+                            <p id="distance"></p>
+                        </div>
+                        
+                    </div>
+                </div>
+                </div>
+
+                <div class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="height:28px;">
+                              <p class="text-center" style="color: #747474; font-family: 'Lato', sans-serif; font-style: normal;">&copy;2017 ARSAC || ASTEC</p>
+                        </div>
+                    </div>
+                </div> 
+                </div>
+
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#a1").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+    $("#a2").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+    $("#a2").hide();
+
+    $("#a1").click(function(){
+        $("#a1").hide();
+        $("#a2").show();
+    });
+
+    $("#a2").click(function(){
+        $("#a1").show();
+        $("#a2").hide();
+    });
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.62.0/src/L.Control.Locate.min.js"></script>
+
+    <script type='text/javascript' src='maps/file1.json'></script>
+    <script type='text/javascript' src='maps/leaf_code.js'></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
